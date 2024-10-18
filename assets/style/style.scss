@@ -1,14 +1,10 @@
 @use 'variables';
-.element {
-    color: variables.$text-gray;
-}
-
 h1 {
     color: variables.$text-black;
     font-family: 'Inter', sans-serif;
-    font-weight: 500;
-    font-size: 40px;
-    line-height: 50px; // Możesz dostosować styl nagłówka
+    font-weight: 500 !important;
+    font-size: 40px !important;
+    line-height: 50px !important; // Możesz dostosować styl nagłówka
 }
 
 h5 {
