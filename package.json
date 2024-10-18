@@ -10,8 +10,16 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxt/icon": "^1.5.6",
+    "@pinia/nuxt": "^0.5.5",
     "nuxt": "^3.13.0",
+    "pinia": "^2.2.4",
+    "sass-loader": "^16.0.2",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.12.2",
+    "sass": "^1.80.2"
   }
 }

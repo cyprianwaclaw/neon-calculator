@@ -1,0 +1,72 @@
+@use 'variables';
+.element {
+    color: variables.$text-gray;
+}
+
+h1 {
+    color: variables.$text-black;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 40px;
+    line-height: 50px; // Możesz dostosować styl nagłówka
+}
+
+h5 {
+    // color: variables.$text-black;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.color-primary {
+    color: variables.$primary !important;
+}
+
+.color-accent {
+    color: variables.$accent !important;
+}
+
+.color-card-bg {
+    background-color: variables.$card-active-bg !important;
+}
+
+.border-radius-base {
+    border-radius: variables.$border-radius-base;
+}
+
+.active-card {
+    border-radius: variables.$border-radius-base;
+    border: 2px solid variables.$primary;
+    background-color: variables.$card-active-bg !important;
+}
+
+.nonactive-card {
+    border-radius: variables.$border-radius-base;
+    border: 1px solid variables.$border-gray;
+    background-color: white;
+    transition: background-color 0.17s ease;
+    &:hover {
+        cursor: pointer;
+        background-color: variables.$card-active-bg;
+    }
+}
+
+button {
+    padding: 13px;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: variables.$white;
+    background: variables.$primary;
+    border-radius: variables.$border-radius-base;
+    transition: background-color 0.2s ease;
+    &:hover {
+        background-color: #7427c7;
+    }
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.3
+    }
+}
