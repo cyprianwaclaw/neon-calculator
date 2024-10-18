@@ -5,7 +5,7 @@
         </template>
         <template v-slot:sidebar>
             <div class="relative h-full">
-                <h1 class="mt-[21px]">Stwórz swój wymarzony neon</h1>
+                <h1 class="pt-[8px]">Stwórz swój wymarzony neon</h1>
                 <div class="flex w-full gap-[21px] my-[50px]">
                     <div @click="handleSelect('text')" :class="select === 'text' ? 'active-card' : 'nonactive-card'"
                         class="w-full h-[115px] border-radius-base flex flex-col justify-center items-center space-y-[5px]">
@@ -21,7 +21,7 @@
                 <div v-if="select === 'image'" class="w-full">
                     <button>Wgraj zdjęcie</button>
                 </div>
-                <div class="absolute w-full bottom-4">
+                <div class="absolute bottom-0 w-full">
                     <button :disabled="disabled">dsadsa</button>
                 </div>
             </div>
