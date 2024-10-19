@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia';
 
-export const useNeonData = defineStore('neon', {
+export const useNeon = defineStore('neon', {
     state: () => ({
-        user: null as any,
+        step: 'start' as any,
     }),
 
     actions: {
-        login() {
-            this.user = "dasdsad";
+        changeStep(name: string) {
+            this.step = name;
         }
     }
 });

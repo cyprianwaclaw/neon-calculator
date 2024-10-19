@@ -1,46 +1,81 @@
 <template>
-    <NuxtLayout name="page">
-        <template v-slot:content>
-            <h1 class="text-white">Stwórz swój wymarzony neon</h1>
-        </template>
-        <template v-slot:sidebar>
-            <div class="relative h-full">
-                <h1 class="pt-[8px]">Stwórz swój wymarzony neon</h1>
-                <div class="flex w-full gap-[21px] my-[50px]">
-                    <div @click="handleSelect('text')" :class="select === 'text' ? 'active-card' : 'nonactive-card'"
-                        class="w-full h-[115px] border-radius-base flex flex-col justify-center items-center space-y-[5px]">
-                        <Icon name="fluent:text-16-regular" size="46" class="color-primary" />
-                        <h5 class="color-primary">Wpisz tekst</h5>
-                    </div>
-                    <div @click="handleSelect('image')" :class="select === 'image' ? 'active-card' : 'nonactive-card'"
-                        class="w-full h-[115px] border-radius-base flex flex-col justify-center items-center space-y-[5px]">
-                        <Icon name="fluent:image-20-regular" size="46" class="color-primary" />
-                        <h5 class="color-primary">Wybierz zdjęcie</h5>
-                    </div>
+    <div>
+        <NavsHeader />
+        <div class="flex w-full">
+            <div class="relative flex-grow">
+                <div class="absolute z-50 mx-20 my-20">
+               <p class="neon-text">neopn</p>
                 </div>
-                <div v-if="select === 'image'" class="w-full">
-                    <button>Wgraj zdjęcie</button>
-                </div>
-                <div class="absolute bottom-0 w-full">
-                    <button :disabled="disabled">dsadsa</button>
+                <div class="relative h-screen">
+                    <img src="@/assets/files/neon-bg.webp" class="absolute inset-0 object-cover w-full h-full" />
                 </div>
             </div>
-        </template>
-    </NuxtLayout>
+            <div class="pt-[82px] bg-white w-[460px] flex h-screen">
+                <div class="p-[50px] w-full relative">
+                    <NavsConf v-if="step != 'start'" />
+                    <!-- <transition name="fade" mode="out-in"> -->
+                    <!-- <div class=""> -->
+                    <component :is="currentComponent" />
+                    <!-- </div> -->
+                    <!-- </transition> -->
+                    <div v-if="step != 'start'" class="absolute bottom-[50px] right-[50px] left-[50px]">
+                        <button class="px-[18px] py-[15px] text-[17px]">
+                            <div class="flex justify-between">
+                                <p>Podsumowanie</p>
+                                <p>1200zł</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script lang="ts" setup>
-// import { storeToRefs } from 'pinia';
-// import { useNeonData } from "@/store/useNeonData";
-const disabled = ref(true)
+import { storeToRefs } from 'pinia';
+import { useNeon } from "@/store/useNeonData";
 
-const select = ref()
-const handleSelect = (name: string) => {
-    name == 'text' ? select.value = 'text' : select.value = 'image'
-}
-// const neonState = useNeonData()
-// const { user } = storeToRefs(neonState);
-// neonState.login()
+const neonState = useNeon();
+const { step } = storeToRefs(neonState);
+
+const currentComponent = ref(defineAsyncComponent(() => import(`@/components/Sections/${step.value}.vue`)));
+watch(step, (newStep) => {
+    currentComponent.value = defineAsyncComponent(() => import(`@/components/Sections/${newStep}.vue`));
+})
+
 </script>
+<style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.25s ease-in-out;
+}
 
-<style lang="scss" scoped></style>
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
+}
+
+.neon-text {
+    color: #39ff14;
+    /* Kolor tekstu - zielony neon */
+    font-size: 2em;
+    /* Rozmiar czcionki */
+    text-align: center;
+    /* Wyśrodkowanie tekstu */
+    text-shadow:
+        0 0 5px #39ff14,
+        /* Blask wewnętrzny */
+        0 0 10px #39ff14,
+        /* Blask zewnętrzny */
+        0 0 15px #39ff14,
+        /* Blask zewnętrzny */
+        0 0 20px #ff00ff,
+        /* Kolor różowy na zewnątrz */
+        0 0 30px #ff00ff,
+        /* Kolor różowy na zewnątrz */
+        0 0 40px #ff00ff,
+        /* Kolor różowy na zewnątrz */
+        0 0 50px #ff00ff;
+    /* Kolor różowy na zewnątrz */
+}</style>

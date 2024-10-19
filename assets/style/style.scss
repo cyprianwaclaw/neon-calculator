@@ -4,7 +4,15 @@ h1 {
     font-family: 'Inter', sans-serif;
     font-weight: 500 !important;
     font-size: 40px !important;
-    line-height: 50px !important; // Możesz dostosować styl nagłówka
+    line-height: 50px !important;
+}
+
+h2 {
+    color: variables.$text-black;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500 !important;
+    font-size: 34px !important;
+    line-height: 50px !important;
 }
 
 h5 {
@@ -28,12 +36,12 @@ h5 {
 }
 
 .border-radius-base {
-    border-radius: variables.$border-radius-base;
+    border-radius: variables.$border-radius-base !important;
 }
 
 .active-card {
     border-radius: variables.$border-radius-base;
-    border: 2px solid variables.$primary;
+    border: 2px solid variables.$primary !important;
     background-color: variables.$card-active-bg !important;
 }
 
@@ -44,7 +52,8 @@ h5 {
     transition: background-color 0.17s ease;
     &:hover {
         cursor: pointer;
-        background-color: variables.$card-active-bg;
+        border: 1px solid variables.$primary;
+        // background-color: variables.$card-active-bg;
     }
 }
 
@@ -64,5 +73,41 @@ button {
     &:disabled {
         cursor: not-allowed;
         opacity: 0.3
+    }
+}
+
+textarea {
+    background-color: #ececec98;
+    padding: 10px 17px;
+    width: 100%;
+    color: #211f1f;
+    font-size: 16px;
+    letter-spacing: 0.17px;
+    border: 2px solid transparent;
+    outline: none;
+    height: 120px;
+    border-radius: 8px;
+    font-weight: 400;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+    resize: none;
+    /* Prevents manual resizing by the user */
+    overflow-y: auto;
+    /* Allows vertical scrolling */
+    &:focus {
+        background-color: #ffffff;
+        border-color: variables.$primary;
+        border-width: 2px;
+        letter-spacing: 0.17px;
+        font-weight: 400;
+    }
+    &::placeholder {
+        letter-spacing: 0.17px;
+        font-size: 16px;
+        font-weight: 400;
+        color: #9D9D9D;
+    }
+    &:focus::placeholder {
+        font-weight: 400;
+        color: #d9d9d9;
     }
 }

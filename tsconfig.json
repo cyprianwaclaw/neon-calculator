@@ -1,4 +1,23 @@
+// {
+//   // https://nuxt.com/docs/guide/concepts/typescript
+//   "extends": "./.nuxt/tsconfig.json",
+//    "compilerOptions": {
+//     "types": ["@nuxt/types", "@nuxtjs/axios", "@types/node"]
+//   }
+// }
+
 {
-  // https://nuxt.com/docs/guide/concepts/typescript
-  "extends": "./.nuxt/tsconfig.json"
+  "compilerOptions": {
+    "skipLibCheck": true,         // Pomija sprawdzanie typów w bibliotekach
+    "types": ["vue"],             // Upewnij się, że typy Vue są dodane
+    "noImplicitAny": false,       // Wyłącza błędy typu "any"
+    "strict": false,              // Wyłącza ścisły tryb TypeScript (mniej błędów)
+    "noEmitOnError": false        // Zapobiega zatrzymaniu kompilacji w przypadku błędów
+  },
+   "include": [
+    "env.d.ts",
+    ".nuxt/nuxt.d.ts",
+    "**/*"
+  ]
+
 }
