@@ -32,7 +32,7 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useNeon } from "@/store/useNeonData";
-import Start from '@/components/Sections/start.vue';
+import Start from '../components/Sections/start.vue';
 import Font from '@/components/Sections/font.vue';
 import { ref, watch } from 'vue';
 
