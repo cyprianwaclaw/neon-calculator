@@ -14,7 +14,8 @@
             <div class="pt-[82px] bg-white w-[460px] flex h-screen">
                 <div class="p-[50px] w-full relative">
                     <NavsConf v-if="step !== 'start'" />
-                    <component :is="currentComponent" />
+                    <SectionsStart v-if="step == 'start'"/>
+                    <!-- <component :is="currentComponent" /> -->
                     <div v-if="step !== 'start'" class="absolute bottom-[50px] right-[50px] left-[50px]">
                         <button class="px-[18px] py-[15px] text-[17px]">
                             <div class="flex justify-between">
@@ -32,24 +33,24 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useNeon } from "@/store/useNeonData";
-import Start from '../components/Sections/start';
-import Font from '../components/Sections/font';
+// import Start from '../components/Sections/start';
+// import Font from '../components/Sections/font';
 import { ref, watch } from 'vue';
 
 const neonState = useNeon()
 const { step } = storeToRefs(neonState)
 
 // Stałe komponenty
-const components = {
-    start: Start,
-    font: Font,
-};
+// const components = {
+//     start: Start,
+//     font: Font,
+// };
 
-const currentComponent = ref(components[step.value] || null);
+// const currentComponent = ref(components[step.value] || null);
 
-watch(step, (newStep) => {
-    currentComponent.value = components[newStep] || null;
-});
+// watch(step, (newStep) => {
+//     currentComponent.value = components[newStep] || null;
+// });
 </script>
 
 
