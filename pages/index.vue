@@ -1,10 +1,11 @@
-<!-- <template>
+
+<template>
     <div>
         <NavsHeader />
         <div class="flex w-full">
             <div class="relative flex-grow">
                 <div class="absolute z-50 mx-20 my-20">
-               <p class="neon-text">neopn</p>
+                    <p class="neon-text">neopn</p>
                 </div>
                 <div class="relative h-screen">
                     <img src="@/assets/files/neon-bg.webp" class="absolute inset-0 object-cover w-full h-full" />
@@ -12,13 +13,9 @@
             </div>
             <div class="pt-[82px] bg-white w-[460px] flex h-screen">
                 <div class="p-[50px] w-full relative">
-                    <NavsConf v-if="step != 'start'" />
-                    <transition name="fade" mode="out-in">
-                    <div class="">
+                    <NavsConf v-if="step !== 'start'" />
                     <component :is="currentComponent" />
-                    </div>
-                    </transition>
-                    <div v-if="step != 'start'" class="absolute bottom-[50px] right-[50px] left-[50px]">
+                    <div v-if="step !== 'start'" class="absolute bottom-[50px] right-[50px] left-[50px]">
                         <button class="px-[18px] py-[15px] text-[17px]">
                             <div class="flex justify-between">
                                 <p>Podsumowanie</p>
@@ -35,17 +32,28 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useNeon } from "@/store/useNeonData";
+import Start from '@/components/Sections/start.vue';
+import Font from '@/components/Sections/font.vue';
+import { ref, watch } from 'vue';
 
 const neonState = useNeon();
 const { step } = storeToRefs(neonState);
 
-const currentComponent = ref(defineAsyncComponent(() => import(`@/components/Sections/${step.value}.vue`)));
-watch(step, (newStep) => {
-    currentComponent.value = defineAsyncComponent(() => import(`@/components/Sections/${newStep}.vue`));
-})
+// Stałe komponenty
+const components = {
+    start: Start,
+    font: Font,
+};
 
-</script> -->
-<template>
+const currentComponent = ref(components[step.value] || null);
+
+watch(step, (newStep) => {
+    currentComponent.value = components[newStep] || null;
+});
+</script>
+
+
+<!-- <template>
     <div>
         <NavsHeader />
         <div class="flex w-full">
@@ -57,11 +65,9 @@ watch(step, (newStep) => {
                     <img src="@/assets/files/neon-bg.webp" class="absolute inset-0 object-cover w-full h-full" />
                 </div>
             </div>
-            <!-- <ClientOnly> -->
                 <div class="pt-[82px] bg-white w-[460px] flex h-screen">
                     <div class="p-[50px] w-full relative">
                         <NavsConf v-if="step != 'start'" />
-                        <SectionsStart/>
                         <component :is="currentComponent" />
                         <div v-if="step != 'start'" class="absolute bottom-[50px] right-[50px] left-[50px]">
                             <button class="px-[18px] py-[15px] text-[17px]">
@@ -73,7 +79,6 @@ watch(step, (newStep) => {
                         </div>
                     </div>
                 </div>
-            <!-- </ClientOnly> -->
         </div>
     </div>
 </template>
@@ -86,16 +91,16 @@ import { markRaw, watch, ref, defineAsyncComponent } from 'vue';
 const neonState = useNeon();
 const { step } = storeToRefs(neonState);
 
-const currentComponent = ref(markRaw(defineAsyncComponent(() => import(`@/components/Sections/${step.value}.vue`))));
+const currentComponent = ref(markRaw(defineAsyncComponent(() => import(`../components/Sections/${step.value}.vue`))));
 
 watch(step, async (newStep) => {
     try {
-        currentComponent.value = markRaw(defineAsyncComponent(() => import(`@/components/Sections/${newStep}.vue`)));
+        currentComponent.value = markRaw(defineAsyncComponent(() => import(`../components/Sections/${newStep}.vue`)));
     } catch (error) {
         console.error(`Error loading component for step ${newStep}:`, error);
     }
 });
-</script>
+</script> -->
 <style lang="scss" scoped>
 .fade-enter-active,
 .fade-leave-active {
