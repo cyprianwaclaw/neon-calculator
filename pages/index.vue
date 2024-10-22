@@ -83,11 +83,23 @@ import { markRaw, watch, ref, defineAsyncComponent } from 'vue';
 const neonState = useNeon();
 const { step } = storeToRefs(neonState);
 
-const currentComponent = ref(markRaw(defineAsyncComponent(() => import(`@/components/Sections/${step.value}.vue`))));
+// const currentComponent = ref(markRaw(defineAsyncComponent(() => import(`@/components/Sections/${step.value}.vue`))));
 
-watch(step, (newStep) => {
-    currentComponent.value = markRaw(defineAsyncComponent(() => import(`@/components/Sections/${newStep}.vue`)));
-});
+// watch(step, (newStep) => {
+//     currentComponent.value = markRaw(defineAsyncComponent(() => import(`@/components/Sections/${newStep}.vue`)));
+// });
+// Użycie process.client, aby upewnić się, że dynamiczny import działa tylko po stronie klienta
+let currentComponent = ref()
+
+if (process.client) {
+    currentComponent = shallowRef(
+        markRaw(defineAsyncComponent(() => import(`@/components/Sections/${step.value}.vue`)))
+    );
+
+    watch(step, (newStep) => {
+        currentComponent.value = markRaw(defineAsyncComponent(() => import(`@/components/Sections/${newStep}.vue`)));
+    });
+}
 </script>
 <style lang="scss" scoped>
 .fade-enter-active,
