@@ -62,7 +62,7 @@ watch(step, (newStep) => {
                     <div class="p-[50px] w-full relative">
                         <NavsConf v-if="step != 'start'" />
                         <SectionsStart/>
-                        <!-- <component :is="currentComponent" /> -->
+                        <component :is="currentComponent" />
                         <div v-if="step != 'start'" class="absolute bottom-[50px] right-[50px] left-[50px]">
                             <button class="px-[18px] py-[15px] text-[17px]">
                                 <div class="flex justify-between">
