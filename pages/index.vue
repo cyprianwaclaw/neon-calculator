@@ -33,7 +33,7 @@
 import { storeToRefs } from 'pinia';
 import { useNeon } from "@/store/useNeonData";
 import Start from '../components/Sections/start.vue';
-import Font from '@/components/Sections/font.vue';
+import Font from '../components/Sections/font.vue';
 import { ref, watch } from 'vue';
 
 const neonState = useNeon();
