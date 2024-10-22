@@ -89,17 +89,32 @@ const { step } = storeToRefs(neonState);
 //     currentComponent.value = markRaw(defineAsyncComponent(() => import(`@/components/Sections/${newStep}.vue`)));
 // });
 // Użycie process.client, aby upewnić się, że dynamiczny import działa tylko po stronie klienta
-let currentComponent = ref()
+// let currentComponent = ref()
 
-if (process.client) {
-    currentComponent = shallowRef(
-        markRaw(defineAsyncComponent(() => import(`@/components/Sections/${step.value}.vue`)))
-    );
+// // if (process.client) {
+//     currentComponent = shallowRef(
+//         markRaw(defineAsyncComponent(() => import(`@/components/Sections/${step.value}.vue`)))
+//     );
 
-    watch(step, (newStep) => {
-        currentComponent.value = markRaw(defineAsyncComponent(() => import(`@/components/Sections/${newStep}.vue`)));
-    });
-}
+//     watch(step, (newStep) => {
+//         currentComponent.value = markRaw(defineAsyncComponent(() => import(`@/components/Sections/${newStep}.vue`)));
+//     });
+// }
+
+const currentComponent = shallowRef(null);
+
+const loadComponent = async (componentName: string) => {
+  try {
+    const component = await import(`@/components/Sections/${componentName}.vue`);
+    currentComponent.value = markRaw(component.default || component);
+  } catch (error) {
+    console.error(`Błąd podczas ładowania komponentu: ${componentName}`, error);
+  }
+};
+
+onMounted(() => {
+    loadComponent("start");
+});
 </script>
 <style lang="scss" scoped>
 .fade-enter-active,
