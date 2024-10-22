@@ -32,12 +32,12 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useNeon } from "@/store/useNeonData";
-import Start from '../components/Sections/start.vue';
-import Font from '../components/Sections/font.vue';
+import Start from '../components/Sections/start';
+import Font from '../components/Sections/font';
 import { ref, watch } from 'vue';
 
-const neonState = useNeon();
-const { step } = storeToRefs(neonState);
+const neonState = useNeon()
+const { step } = storeToRefs(neonState)
 
 // Stałe komponenty
 const components = {
