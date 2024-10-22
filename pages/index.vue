@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <div>
         <NavsHeader />
         <div class="flex w-full">
@@ -13,11 +13,11 @@
             <div class="pt-[82px] bg-white w-[460px] flex h-screen">
                 <div class="p-[50px] w-full relative">
                     <NavsConf v-if="step != 'start'" />
-                    <!-- <transition name="fade" mode="out-in"> -->
-                    <!-- <div class=""> -->
+                    <transition name="fade" mode="out-in">
+                    <div class="">
                     <component :is="currentComponent" />
-                    <!-- </div> -->
-                    <!-- </transition> -->
+                    </div>
+                    </transition>
                     <div v-if="step != 'start'" class="absolute bottom-[50px] right-[50px] left-[50px]">
                         <button class="px-[18px] py-[15px] text-[17px]">
                             <div class="flex justify-between">
@@ -44,6 +44,50 @@ watch(step, (newStep) => {
     currentComponent.value = defineAsyncComponent(() => import(`@/components/Sections/${newStep}.vue`));
 })
 
+</script> -->
+<template>
+    <div>
+        <NavsHeader />
+        <div class="flex w-full">
+            <div class="relative flex-grow">
+                <div class="absolute z-50 mx-20 my-20">
+                    <p class="neon-text">neopn</p>
+                </div>
+                <div class="relative h-screen">
+                    <img src="@/assets/files/neon-bg.webp" class="absolute inset-0 object-cover w-full h-full" />
+                </div>
+            </div>
+            <div class="pt-[82px] bg-white w-[460px] flex h-screen">
+                <div class="p-[50px] w-full relative">
+                    <NavsConf v-if="step != 'start'" />
+                    <component :is="currentComponent" />
+                    <div v-if="step != 'start'" class="absolute bottom-[50px] right-[50px] left-[50px]">
+                        <button class="px-[18px] py-[15px] text-[17px]">
+                            <div class="flex justify-between">
+                                <p>Podsumowanie</p>
+                                <p>1200zł</p>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script lang="ts" setup>
+import { storeToRefs } from 'pinia';
+import { useNeon } from "@/store/useNeonData";
+import { markRaw, watch, ref, defineAsyncComponent } from 'vue';
+
+const neonState = useNeon();
+const { step } = storeToRefs(neonState);
+
+const currentComponent = ref(markRaw(defineAsyncComponent(() => import(`@/components/Sections/${step.value}.vue`))));
+
+watch(step, (newStep) => {
+    currentComponent.value = markRaw(defineAsyncComponent(() => import(`@/components/Sections/${newStep}.vue`)));
+});
 </script>
 <style lang="scss" scoped>
 .fade-enter-active,
@@ -78,4 +122,5 @@ watch(step, (newStep) => {
         /* Kolor różowy na zewnątrz */
         0 0 50px #ff00ff;
     /* Kolor różowy na zewnątrz */
-}</style>
+}
+</style>

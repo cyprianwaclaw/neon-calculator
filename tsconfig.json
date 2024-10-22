@@ -1,11 +1,3 @@
-// {
-//   // https://nuxt.com/docs/guide/concepts/typescript
-//   "extends": "./.nuxt/tsconfig.json",
-//    "compilerOptions": {
-//     "types": ["@nuxt/types", "@nuxtjs/axios", "@types/node"]
-//   }
-// }
-
 {
   "compilerOptions": {
     "skipLibCheck": true,         // Pomija sprawdzanie typów w bibliotekach
