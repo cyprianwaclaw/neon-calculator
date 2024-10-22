@@ -57,11 +57,12 @@ watch(step, (newStep) => {
                     <img src="@/assets/files/neon-bg.webp" class="absolute inset-0 object-cover w-full h-full" />
                 </div>
             </div>
-            <ClientOnly>
+            <!-- <ClientOnly> -->
                 <div class="pt-[82px] bg-white w-[460px] flex h-screen">
                     <div class="p-[50px] w-full relative">
                         <NavsConf v-if="step != 'start'" />
-                        <component :is="currentComponent" />
+                        <SectionsStart/>
+                        <!-- <component :is="currentComponent" /> -->
                         <div v-if="step != 'start'" class="absolute bottom-[50px] right-[50px] left-[50px]">
                             <button class="px-[18px] py-[15px] text-[17px]">
                                 <div class="flex justify-between">
@@ -72,7 +73,7 @@ watch(step, (newStep) => {
                         </div>
                     </div>
                 </div>
-            </ClientOnly>
+            <!-- </ClientOnly> -->
         </div>
     </div>
 </template>
