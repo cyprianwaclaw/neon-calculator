@@ -13,11 +13,14 @@
             </div>
             <div class="pt-[82px] bg-white w-[460px] flex h-screen">
                 <div class="p-[50px] w-full relative">
-                    <NavsConf v-if="step !== 'start'" />
-                    <SectionsStart v-if="step == 'start'"/>
-                    <!-- <component :is="currentComponent" /> -->
+                    <NavsMain v-if="step !== 'start'" />
+                    <SectionsStart v-if="step == 'start'" />
+                    <SectionsFont v-if="step == 'font'" />
+                    <SectionsRozmiar v-if="step == 'rozmiar'" />
+                    <SectionsKolor v-if="step == 'kolor'" />
+                    <SectionsDodatki v-if="step == 'dodatki'" />
                     <div v-if="step !== 'start'" class="absolute bottom-[50px] right-[50px] left-[50px]">
-                        <button class="px-[18px] py-[15px] text-[17px]">
+                        <button class="px-[18px] py-[15px] text-[17px]" @click="setStepSummary()">
                             <div class="flex justify-between">
                                 <p>Podsumowanie</p>
                                 <p>1200zł</p>
@@ -33,75 +36,15 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useNeon } from "@/store/useNeonData";
-// import Start from '../components/Sections/start';
-// import Font from '../components/Sections/font';
-import { ref, watch } from 'vue';
-
 const neonState = useNeon()
 const { step } = storeToRefs(neonState)
 
-// Stałe komponenty
-// const components = {
-//     start: Start,
-//     font: Font,
-// };
+const setStepSummary = () => {
+     neonState.changeStep('podsumowanie')
+}
 
-// const currentComponent = ref(components[step.value] || null);
-
-// watch(step, (newStep) => {
-//     currentComponent.value = components[newStep] || null;
-// });
 </script>
 
-
-<!-- <template>
-    <div>
-        <NavsHeader />
-        <div class="flex w-full">
-            <div class="relative flex-grow">
-                <div class="absolute z-50 mx-20 my-20">
-                    <p class="neon-text">neopn</p>
-                </div>
-                <div class="relative h-screen">
-                    <img src="@/assets/files/neon-bg.webp" class="absolute inset-0 object-cover w-full h-full" />
-                </div>
-            </div>
-                <div class="pt-[82px] bg-white w-[460px] flex h-screen">
-                    <div class="p-[50px] w-full relative">
-                        <NavsConf v-if="step != 'start'" />
-                        <component :is="currentComponent" />
-                        <div v-if="step != 'start'" class="absolute bottom-[50px] right-[50px] left-[50px]">
-                            <button class="px-[18px] py-[15px] text-[17px]">
-                                <div class="flex justify-between">
-                                    <p>Podsumowanie</p>
-                                    <p>1200zł</p>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-        </div>
-    </div>
-</template>
-
-<script lang="ts" setup>
-import { storeToRefs } from 'pinia';
-import { useNeon } from "@/store/useNeonData";
-import { markRaw, watch, ref, defineAsyncComponent } from 'vue';
-
-const neonState = useNeon();
-const { step } = storeToRefs(neonState);
-
-const currentComponent = ref(markRaw(defineAsyncComponent(() => import(`../components/Sections/${step.value}.vue`))));
-
-watch(step, async (newStep) => {
-    try {
-        currentComponent.value = markRaw(defineAsyncComponent(() => import(`../components/Sections/${newStep}.vue`)));
-    } catch (error) {
-        console.error(`Error loading component for step ${newStep}:`, error);
-    }
-});
-</script> -->
 <style lang="scss" scoped>
 .fade-enter-active,
 .fade-leave-active {

@@ -1,15 +1,20 @@
 {
   "compilerOptions": {
-    "skipLibCheck": true,         // Pomija sprawdzanie typów w bibliotekach
-    "types": ["vue"],             // Upewnij się, że typy Vue są dodane
-    "noImplicitAny": false,       // Wyłącza błędy typu "any"
-    "strict": false,              // Wyłącza ścisły tryb TypeScript (mniej błędów)
-    "noEmitOnError": false        // Zapobiega zatrzymaniu kompilacji w przypadku błędów
+    "skipLibCheck": true,
+    "types": ["vue"],
+    "noImplicitAny": false,
+    "strict": false,
+    "noEmitOnError": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"],
+      "@/store/*": ["./store/*"],
+      "@/components/*": ["./components/*"]
+    }
   },
-   "include": [
+  "include": [
     "env.d.ts",
     ".nuxt/nuxt.d.ts",
     "**/*"
   ]
-
 }

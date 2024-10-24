@@ -34,7 +34,7 @@ const setStep = (name: string) => {
     const changeName = name.toLowerCase() as any
     neonState.changeStep(changeName)
 }
-function capitalizeFirstLetter(text: string) {
+const capitalizeFirstLetter = (text: string) => {
     return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
@@ -44,4 +44,5 @@ function capitalizeFirstLetter(text: string) {
     border-bottom: 1px solid #E3E3E3;
     padding-bottom: 24px;
     margin-bottom: 40px;
-}</style>
+}
+</style>

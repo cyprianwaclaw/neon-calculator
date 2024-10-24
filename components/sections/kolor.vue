@@ -1,6 +1,6 @@
 <template>
     <div class="flex w-full gap-[21px]">
-        fdfdfgg
+        fdfdfgg  koloor
     </div>
 </template>
 <script lang="ts" setup>

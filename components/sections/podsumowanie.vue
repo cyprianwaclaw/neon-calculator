@@ -1,9 +1,7 @@
 <template>
-        <div class="flex w-full gap-[21px]">
-            <div class="w-full h-full bg-slate-400">
-                fdfdfgg font
-            </div>
-        </div>
+    <div class="flex w-full gap-[21px]">
+        fdfdfgg summary
+    </div>
 </template>
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
