@@ -1,6 +1,6 @@
 <template>
     <div class="flex w-full gap-[21px]">
-        fdfdfgg size
+        <InputsRange :max="100" :maxValue="size" @update:maxValue="updateNeonSize" />
     </div>
 </template>
 <script lang="ts" setup>
@@ -8,6 +8,12 @@ import { storeToRefs } from 'pinia';
 import { useNeon } from "@/store/useNeonData"
 
 const neonState = useNeon()
-const { step } = storeToRefs(neonState);
+const { neonSize } = storeToRefs(neonState);
+
+const size = ref(neonSize.value);
+
+const updateNeonSize = (value:any) => {
+     neonSize.value = value;
+}
 
 </script>

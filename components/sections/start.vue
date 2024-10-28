@@ -1,5 +1,5 @@
 <template>
-    <div class="relative h-full">
+    <div class="relative h-full non-select">
         <h1 class="pt-[8px]">Stwórz swój wymarzony neon</h1>
         <div class="flex w-full gap-[21px] my-[50px]">
             <div @click="handleSelect('text')" :class="select === 'text' ? 'active-card' : 'nonactive-card'"
@@ -28,14 +28,18 @@
 import { storeToRefs } from 'pinia';
 import { useNeon } from "@/store/useNeonData"
 
-const neonState = useNeon()
-const { user } = storeToRefs(neonState);
+const neonState = useNeon() 
+const { neonShape } = storeToRefs(neonState);
 
 const select = ref() as any
 const textareaValue = ref('') as any
 const handleSelect = (name: string) => {
     name == 'text' ? select.value = 'text' : select.value = 'image'
 }
+
+watch(textareaValue, (newValue: string) => {
+    neonShape.value = newValue
+})
 
 const changeDisabledButton = (select: string, data: any) => {
     if (select == 'text' && data.length > 1 && data.length < 50) {

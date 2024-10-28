@@ -1,5 +1,5 @@
 <template>
-    <div class="-mt-[21px]">
+    <div class="-mt-[21px] non-select">
         <div class="flex w-full own-border">
             <div v-for="(card, index) in array" :key="index" class="flex w-full">
                 <div @click="setStep(card.name)"
@@ -13,7 +13,7 @@
                 </div>
             </div>
         </div>
-        <h2 class="pb-[18px]">{{ capitalizeFirstLetter(step) }}</h2>
+        <h2 class="pb-[14px]">{{ capitalizeFirstLetter(step) }}</h2>
     </div>
 </template>
 <script lang="ts" setup>

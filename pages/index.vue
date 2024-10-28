@@ -1,32 +1,34 @@
-
 <template>
     <div>
         <NavsHeader />
         <div class="flex w-full">
             <div class="relative flex-grow">
-                <div class="absolute z-50 mx-20 my-20">
-                    <p class="neon-text">neopn</p>
+                <div class="absolute z-50 mx-20 my-20 bg-white">
+                    <!-- <p class="neon-text">neopn</p> -->
+                    <NeonCanvas />
                 </div>
                 <div class="relative h-screen">
                     <img src="@/assets/files/neon-bg.webp" class="absolute inset-0 object-cover w-full h-full" />
                 </div>
             </div>
-            <div class="pt-[82px] bg-white w-[460px] flex h-screen">
-                <div class="p-[50px] w-full relative">
+            <div class="pt-[82px] bg-white w-[460px] flex h-screen flex-col">
+                <div class="p-[50px] w-full flex-grow relative">
                     <NavsMain v-if="step !== 'start'" />
                     <SectionsStart v-if="step == 'start'" />
-                    <SectionsFont v-if="step == 'font'" />
-                    <SectionsRozmiar v-if="step == 'rozmiar'" />
-                    <SectionsKolor v-if="step == 'kolor'" />
-                    <SectionsDodatki v-if="step == 'dodatki'" />
-                    <div v-if="step !== 'start'" class="absolute bottom-[50px] right-[50px] left-[50px]">
-                        <button class="px-[18px] py-[15px] text-[17px]" @click="setStepSummary()">
-                            <div class="flex justify-between">
-                                <p>Podsumowanie</p>
-                                <p>1200zł</p>
-                            </div>
-                        </button>
+                    <div class="overflow-scroll" style="max-height: calc(100vh - 82px - 123px - 260px);">
+                        <SectionsFont v-if="step == 'font'" />
+                        <SectionsRozmiar v-if="step == 'rozmiar'" />
+                        <SectionsKolor v-if="step == 'kolor'" />
+                        <SectionsDodatki v-if="step == 'dodatki'" />
                     </div>
+                </div>
+                <div v-if="step !== 'start'" class="absolute bottom-[50px] right-[50px] w-[360px]">
+                    <button class="px-[18px] py-[15px] text-[17px] " @click="setStepSummary()">
+                        <div class="flex justify-between">
+                            <p>Podsumowanie</p>
+                            <p>1200zł</p>
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>
@@ -36,13 +38,12 @@
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
 import { useNeon } from "@/store/useNeonData";
-const neonState = useNeon()
-const { step } = storeToRefs(neonState)
+const neonState = useNeon();
+const { step } = storeToRefs(neonState);
 
 const setStepSummary = () => {
-     neonState.changeStep('podsumowanie')
+    neonState.changeStep('podsumowanie');
 }
-
 </script>
 
 <style lang="scss" scoped>
