@@ -4,8 +4,8 @@ export const useNeon = defineStore('neon', {
     state: () => ({
         step: 'start' as any,
         neonShape: '' as any,
-        font: 'Arial' as string,
-        neonSize: 50 as number,
+        fontFamily: 'Arial' as string,
+        neonSize: 70 as number,
     }),
 
     actions: {

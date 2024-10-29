@@ -19,8 +19,10 @@
         <div v-if="select === 'text'">
             <InputsTextArea v-model="textareaValue" label="Wpisz tekst neonu" placeholder="O czym mam Ci przypominać ?" />
         </div>
+        <!-- {{ textareaValue }} -->
         <div class="absolute bottom-0 w-full">
             <button :disabled="changeDisabledButton(select, textareaValue)" @click="startingConfigureNeon()">dsadsa</button>
+        <!-- <button @click="startingConfigureNeon()">dsadsa</button> -->
         </div>
     </div>
 </template>

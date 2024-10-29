@@ -3,9 +3,9 @@
         <NavsHeader />
         <div class="flex w-full">
             <div class="relative flex-grow">
-                <div class="absolute z-50 mx-20 my-20 bg-white">
+                <div class="absolute z-50 mx-40">
                     <!-- <p class="neon-text">neopn</p> -->
-                    <NeonCanvas />
+                    <NeonCanvas1 />
                 </div>
                 <div class="relative h-screen">
                     <img src="@/assets/files/neon-bg.webp" class="absolute inset-0 object-cover w-full h-full" />

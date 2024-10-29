@@ -1,7 +1,7 @@
 <template>
     <div class="grid w-full grid-cols-2 gap-4 non-select">
         <div v-for="(singleFont, index) in fontsArray" :key="index" class="w-full">
-            <div @click="selectedFont(singleFont)" :class="singleFont === font ? 'active-card' : 'nonactive-card'"
+            <div @click="selectedFont(singleFont)" :class="singleFont === fontFamily ? 'active-card' : 'nonactive-card'"
                 class="h-[70px] flex place-items-center justify-center text-[17px] color-primary "
                 :style="{ fontFamily: `${singleFont}, sans-serif` }">
                 {{ singleFont }}
@@ -14,7 +14,7 @@ import { storeToRefs } from 'pinia';
 import { useNeon } from "@/store/useNeonData"
 
 const neonState = useNeon()
-const { font } = storeToRefs(neonState);
+const { fontFamily } = storeToRefs(neonState);
 
 const fontsArray = ref([
     'Arial',
@@ -51,7 +51,7 @@ const fontsArray = ref([
 ]);
 
 const selectedFont = (fontNam: string) => {
-    font.value = fontNam;
+    fontFamily.value = fontNam;
 }
 </script>
 <style scoped>
