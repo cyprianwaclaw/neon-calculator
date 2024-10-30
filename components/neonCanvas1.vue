@@ -1,15 +1,9 @@
 <template>
-  <svg ref="svg" @mousemove="handleMouseMove"  width="1000" height="500">
+  <svg ref="svg" @mousemove="handleMouseMove" width="1000" height="500">
     <g v-if="neonShape">
-      <text
-        v-for="(char, index) in neonShape"
-        @mousemove="getCharacterSize"
-        :key="index"
-        :x="getX(index)"
-        :y="canvasHeight / 2"
-        class="test"
-        :style="`font-family: ${fontFamily}; font-size: ${neonSize}px;`"
-        >
+      <text v-for="(char, index) in neonShape" @click="getCharacterSize" :key="index" :x="getX(index)"
+        :y="canvasHeight / 2" class="test">
+        <!-- :style="`font-family: ${fontFamily}; font-size: ${neonSize}px;`" -->
         <!-- :class="getCharClass(index)" -->
         {{ char }}
       </text>
@@ -58,7 +52,9 @@ const getX = (index: number) => {
   }
   return x;
 };
+const resetCharacterSize = () => {
 
+}
 const getCharClass = (index: number) => {
   return hoveredCharIndex.value === index ? 'neon-red' : 'neon-cyan';
 };
@@ -125,8 +121,8 @@ const handleMouseMove = (event: MouseEvent) => {
     const { x, width, height } = charPositions.value[i];
 
     if (mouseX >= x && mouseX <= x + width &&
-        mouseY >= canvasHeight / 2 - height / 2 &&
-        mouseY <= canvasHeight / 2 + height / 2) {
+      mouseY >= canvasHeight / 2 - height / 2 &&
+      mouseY <= canvasHeight / 2 + height / 2) {
       hoveredCharIndex.value = i;
       break;
     }
@@ -145,8 +141,8 @@ const getCharacterSize = (event: MouseEvent) => {
 
   for (const { char, x: charX, width, height } of charPositions.value) {
     if (x >= charX && x <= charX + width &&
-        y >= canvasHeight / 2 - height / 2 &&
-        y <= canvasHeight / 2 + height / 2) {
+      y >= canvasHeight / 2 - height / 2 &&
+      y <= canvasHeight / 2 + height / 2) {
       characterInfo.value = {
         char,
         width,
@@ -177,21 +173,23 @@ svg {
 }
 
 
-.test{
+.test {
   cursor: pointer;
- fill: rgba(0, 255, 255, 1);
+  fill: rgba(0, 255, 255, 1);
   /* drop-shadow(0 0 5px rgba(0, 255, 255, 0.7)) drop-shadow(0 0 10px rgba(0, 255, 255, 0.5)) drop-shadow(0 0 20px rgba(0, 255, 255, 0.5)) drop-shadow(0 0 30px rgba(0, 255, 255, 0.3)) drop-shadow(0 0 40px rgba(0, 255, 255, 0.2)); */
 
 }
-.test:hover{
-fill: rgb(0, 4, 255);
+
+.test:hover {
+  fill: rgb(0, 4, 255);
   /* filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.7)) drop-shadow(0 0 10px rgba(0, 255, 255, 0.5)) drop-shadow(0 0 20px rgba(0, 255, 255, 0.5)) drop-shadow(0 0 30px rgba(0, 255, 255, 0.3)) drop-shadow(0 0 40px rgba(0, 255, 255, 0.2)); */
 
 }
+
 svg {
-   fill: rgba(0, 255, 255, 1);
+  fill: rgba(0, 255, 255, 1);
   filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.7)) drop-shadow(0 0 10px rgba(0, 255, 255, 0.5)) drop-shadow(0 0 20px rgba(0, 255, 255, 0.5)) drop-shadow(0 0 30px rgba(0, 255, 255, 0.3)) drop-shadow(0 0 40px rgba(0, 255, 255, 0.2));
-  
+
   /* filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4)); */
 }
 </style>

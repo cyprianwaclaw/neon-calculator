@@ -5,7 +5,9 @@
             <div class="relative flex-grow">
                 <div class="absolute z-50 mx-40">
                     <!-- <p class="neon-text">neopn</p> -->
-                    <NeonCanvas1 />
+                    <NeonCanvas2 />
+                    <!-- <p class="test">Hello</p> -->
+                    
                 </div>
                 <div class="relative h-screen">
                     <img src="@/assets/files/neon-bg.webp" class="absolute inset-0 object-cover w-full h-full" />
@@ -56,7 +58,11 @@ const setStepSummary = () => {
 .fade-leave-to {
     opacity: 0;
 }
-
+.test{
+    font-size: 50px;
+    color: red;
+    font-family: Brush Script MT;
+}
 .neon-text {
     color: #39ff14;
     /* Kolor tekstu - zielony neon */
