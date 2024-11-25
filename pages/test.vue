@@ -1,189 +1,164 @@
 <!-- <template>
-    <div>
-        <h1>Informacje o czcionce OTF</h1>
-        <input type="file" @change="onFileChange" accept=".otf" />
-        <div v-if="font">
-            <h2>Nazwa czcionki: {{ font.names?.fontFamily }}</h2>
-            <p>Liczba glyphów: {{ font.numGlyphs }}</p>
-            <h3>Glyphy:</h3>
-            <ul>
-                <li v-for="glyph in font.glyphs.glyphs" :key="glyph.id">
-                    ID: {{ glyph.id }}, Unicode: {{ glyph.unicode !== undefined ? String.fromCharCode(glyph.unicode) : 'N/A'
-                    }}
-                </li>
-            </ul>
-            <h2>LIGATURY</h2>
-
-            <ul>
-                <li v-for="glyph in font.glyphs.glyphs" :key="glyph.id">
-                    ID: {{ glyph.id }}, Unicode: {{ glyph.unicode !== undefined ? String.fromCharCode(glyph.unicode) : 'N/A'
-                    }}
-                    <span v-if="glyph.isLigature">(Ligatura)</span>
-                </li>
-            </ul>
-
-        </div>
-    </div>
+  <div ref="canvasContainer" class="canvas-container"></div>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue';
-import opentype from 'opentype.js';
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import * as THREE from 'three'
 
-const font = ref<any>(null);
+const canvasContainer = ref<HTMLElement | null>(null)
 
-const onFileChange = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    const file = target.files?.[0];
-
-    if (file) {
-        // Użyj opentype.load bezpośrednio na obiekcie File
-        opentype.load(URL.createObjectURL(file), (err, loadedFont) => {
-            if (err) {
-                console.error('Błąd podczas wczytywania czcionki:', err);
-                return;
-            }
-            font.value = loadedFont;
-        });
-    }
-};
-</script>
-
-<style scoped>
-/* Stylizacja komponentu */body {
-  font-variant-ligatures: contextual;
-}
-</style> -->
-
-
-<!-- <template>
-    <div>
-        <svg :width="size" :height="size" xmlns="http://www.w3.org/2000/svg">
-            <circle :cx="size / 2" :cy="size / 2" :r="radius" fill="blue" />
-            <g v-for="(letter, index) in letters" :key="index">
-                <text :x="size / 2 + (index - letters.length / 2) * 20" :y="size / 2 + 5" font-size="20"
-                    text-anchor="middle" fill="white">
-                    {{ letter }}
-                </text>
-            </g>
-        </svg>
-    </div>
-</template>
-
-<script lang="ts" setup>
-import { ref, computed } from 'vue';
-
-// Zmienna tekstowa
-const text = ref('sdadsd');
-const size = ref(300); // Zwiększono rozmiar SVG
-const radius = ref(100);
-
-// Obliczanie liter z tekstu
-const letters = computed(() => text.value.split(''));
-</script>
-
-<style scoped>
-svg {
-    border: 1px solid black;
-    /* Opcjonalna ramka dla SVG */
-}
-</style> -->
-
-
-
-<template>
-    <div>
-        <!-- Wyświetlenie wygenerowanego SVG -->
-        <div ref="svgContainer"></div>
-    </div>
-</template>
-
-<script lang="ts" setup>
-import { onMounted, ref } from 'vue';
-
-const svgContainer = ref<HTMLElement | null>(null);
-
-// Funkcja do stworzenia SVG z tekstem jako ścieżką
-function createTextPathSVG(text: string, fontSize = 24, fontFamily = 'Arial') {
-    const svgNS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(svgNS, "svg");
-    svg.setAttribute("width", "100");
-    svg.setAttribute("height", "100");
-    svg.setAttribute("viewBox", "0 0 100 100");
-
-    const textElement = document.createElementNS(svgNS, "text");
-    textElement.setAttribute("x", "10");
-    textElement.setAttribute("y", "50");
-    textElement.setAttribute("font-size", fontSize.toString());
-    textElement.setAttribute("font-family", fontFamily);
-    textElement.setAttribute("fill", "black");
-    textElement.textContent = text;
-
-    svg.appendChild(textElement);
-
-    return svg;
-}
-
-// Dodanie SVG do kontenera po zamontowaniu komponentu
 onMounted(() => {
-    if (svgContainer.value) {
-        const svgIcon = createTextPathSVG("T");
-        svgContainer.value.appendChild(svgIcon);
+  if (canvasContainer.value) {
+    // Tworzenie sceny, kamery i renderera
+    const scene = new THREE.Scene()
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+    const renderer = new THREE.WebGLRenderer()
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    canvasContainer.value.appendChild(renderer.domElement)
+
+    // Tworzenie sześcianu
+    const geometry = new THREE.BoxGeometry()
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+    const cube = new THREE.Mesh(geometry, material)
+    scene.add(cube)
+
+    // Ładowanie czcionki i dodanie tekstu 3D
+    const fontLoader = new THREE.FontLoader()
+    fontLoader.load(
+      'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json',
+      (font) => {
+        const textGeometry = new THREE.TextGeometry('Hello, 3D World!', {
+          font: font,
+          size: 1,
+          height: 0.2
+        })
+        const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+        const textMesh = new THREE.Mesh(textGeometry, textMaterial)
+
+        // Ustawienie pozycji tekstu
+        textMesh.position.set(-5, 2, 0)
+        scene.add(textMesh)
+      },
+      // Opcjonalnie: funkcje do śledzenia postępu ładowania i obsługi błędów
+      (progress) => {
+        console.log('Loading font:', progress.loaded / progress.total * 100, '%')
+      },
+      (error) => {
+        console.error('Error loading font:', error)
+      }
+    )
+
+    // Ustawienie kamery
+    camera.position.z = 5
+
+    // Funkcja animująca
+    const animate = () => {
+      requestAnimationFrame(animate)
+      cube.rotation.x += 0.01
+      cube.rotation.y += 0.01
+      renderer.render(scene, camera)
     }
-});
-</script>
-
-
-
-
-<!-- 
-<template>
-    <div>
-        <h1>Znajdowanie ligatur w czcionkach</h1>
-        <input type="text" v-model="inputText" placeholder="Wpisz tekst..." />
-        <button @click="findLigatures">Znajdź ligatury</button>
-
-        <div v-if="ligatureResult">
-            <h2>Wynik ligatur:</h2>
-            <pre>{{ ligatureResult }}</pre>
-        </div>
-    </div>
-</template>
-
-<script lang="ts" setup>
-import { ref } from 'vue';
-import fontLigatures from 'font-ligatures';
-
-const inputText = ref('');
-const ligatureResult = ref<string | null>(null);
-
-const findLigatures = async () => {
-    try {
-        const font = await fontLigatures.load('Arial');
-        const result = font.findLigatures(inputText.value);
-        ligatureResult.value = JSON.stringify(result, null, 2);
-    } catch (error) {
-        console.error('Błąd podczas ładowania czcionki:', error);
-        ligatureResult.value = 'Wystąpił błąd przy ładowaniu czcionki.';
-    }
-};
+    
+    animate()
+  }
+})
 </script>
 
 <style scoped>
-/* Stylizacja komponentu */
-input {
-    margin-bottom: 10px;
-    padding: 8px;
-    width: 300px;
-}
-
-button {
-    padding: 8px 12px;
-}
-
-pre {
-    background-color: #f0f0f0;
-    padding: 10px;
-    border: 1px solid #ddd;
+.canvas-container {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 </style> -->
+<template>
+  <div class="flex text-wrap gap-[10px] ml-[100px]">
+    <p class="text">
+      {{ text }}
+    </p>
+      <p class="text">
+    {{ text1 }}
+    </p>
+    
+    <!-- {{ text2 }}
+    {{ text3 }}
+    {{ text4 }} -->
+    <!-- </p> -->
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+// Definiujemy zmienną tekstową
+const text = ref('I');
+const text1 = ref('z');
+const text2 = ref('o');
+const text3 = ref('m');
+const text4 = ref('e');
+
+</script>
+
+<style scoped lang="scss">
+// .text-wrap {
+//   perspective: 1000px;
+//   perspective-origin: 50% 50%;
+//   margin-top: 300px;
+// }
+
+// .text {
+//   text-align: center;
+//   color: #fff;
+//   font-size: 5em;
+//   font-weight: bold;
+//   font-family: Helvetica;
+//   transition: 0.35s;
+//   transform: rotateX(10deg) rotateY(1deg) rotateZ(-4deg);
+//   text-shadow:
+//     -1px 1px 0 #ccc,
+//     -2px 2px 0 #c9c9c9,
+//     -3px 3px 0 #bbb,
+//     -4px 4px 0 #b9b9b9,
+//     -5px 5px 0 #aaa,
+//     -6px 6px 1px rgba(0, 0, 0, .1),
+//     -1px 1px 3px rgba(0, 0, 0, .3),
+//     -3px 3px 5px rgba(0, 0, 0, .2),
+//     -5px 5px 10px rgba(0, 0, 0, .25),
+//     -10px 10px 10px rgba(0, 0, 0, .2),
+//     -20px 20px 20px rgba(0, 0, 0, .15);
+// }
+.text {
+  text-align: center;
+  color: #fff;
+  font-size: 5em;
+  font-weight: bold;
+  font-family: Helvetica;
+  transition: 0.35s;
+  transform: rotateX(10deg) rotateY(1deg) rotateZ(-4deg);
+  text-shadow:
+    -1px 1px 0 #ccc,
+    -2px 2px 0 #c9c9c9,
+    -3px 3px 0 #bbb,
+    -4px 4px 0 #b9b9b9,
+    -5px 5px 0 #aaa,
+    -6px 6px 1px rgba(0, 0, 0, .1),
+    -1px 1px 3px rgba(0, 0, 0, .3),
+    -3px 3px 5px rgba(0, 0, 0, .2),
+    -5px 5px 10px rgba(0, 0, 0, .25),
+    -10px 10px 10px rgba(0, 0, 0, .2),
+    -20px 20px 20px rgba(0, 0, 0, .15);
+}
+
+.text::before {
+  content: attr(data-text); /* kopiowanie tekstu */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  color: rgba(0, 0, 0, 0.5); /* cień */
+  text-shadow: none; /* brak cienia w pseudo elemencie */
+}
+</style>
+
+

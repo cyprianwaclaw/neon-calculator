@@ -1,11 +1,13 @@
 <template>
-  <div class=" mt-44" ref="svgContainer" style="position: relative;">
-    <svg :width="500" :height="700" xmlns="http://www.w3.org/2000/svg">
+  <div class="mt-20" ref="svgContainer" style="position: relative;">
+    <svg :width="500" :height="500" xmlns="http://www.w3.org/2000/svg">
+      <p class="text-white">
+        {{ textArray }}
+      </p>
       <text :x="10" y="300" :font-size="neonSize" :font-family="fontFamily" @mouseleave="hideDimensions">
         <tspan v-for="(charData, index) in textArray" :key="index" :fill="charData.color" :x="getXPosition(index)"
           @mouseover="showDimensions(index, $event)" @click="handleLetterClick(index)"
-          :style="getTextStyle(charData.color)" class="text-neon"
-          >
+          :style="getTextStyle(charData.color)" class="text-neon">
           {{ charData.char }}
         </tspan>
       </text>
@@ -17,52 +19,29 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia';
-import { useNeon } from "@/store/useNeonData";
-import { ref, onMounted, nextTick } from 'vue';
+import { storeToRefs } from 'pinia'
+import { useNeon } from "@/store/useNeonData"
 
-const neonState = useNeon();
-const { neonSize, neonShape, fontFamily } = storeToRefs(neonState);
+const neonState = useNeon()
+const { neonSize, neonShape, fontFamily, neonColor, step, isChangeLetterColor } = storeToRefs(neonState)
 
+const textArray = ref<any[]>([])
 
-const textArray = ref([])
+// Używamy watch, aby reagować na zmiany koloru neonowego
+watch(neonColor, (newColor) => {
+  // Zaktualizuj kolor każdej litery w tablicy
+  textArray.value = textArray.value.map(charData => {
+    return { ...charData, color: newColor }
+  });
+  // console.log(textArray.value)
+});
 
-// const textArray = ref([
-//   {
-//     "char": "f",
-//     "color": "rgba(0, 255, 255, 1)"
-//   },
-//   {
-//     "char": "d",
-//     "color": "rgba(0, 255, 255, 1)"
-//   },
-//   {
-//     "char": "f",
-//     "color": "rgba(0, 255, 255, 1)"
-//   },
-//   {
-//     "char": "d",
-//     "color": "rgba(0, 255, 255, 1)"
-//   },
-//   {
-//     "char": "s",
-//     "color": "rgba(0, 255, 255, 1)"
-//   },
-//   {
-//     "char": "f",
-//     "color": "rgba(0, 255, 255, 1)"
-//   },
-//   {
-//     "char": "f",
-//     "color": "rgba(0, 255, 255, 1)"
-//   }
-// ]);
-
-watch(neonShape, (newValue) => {
+// Aktualizujemy tablicę tekstową, kiedy zmienia się neonShape
+watch(neonShape, () => {
   textArray.value = neonState.textAsArray()
-  console.log(neonState.textAsArray())
-})
+});
 
+// Funkcja do generowania stylów tekstu z efektem neonowego światła
 function getTextStyle(color: string) {
   return {
     filter: `
@@ -73,18 +52,22 @@ function getTextStyle(color: string) {
     `
   };
 }
+
 const hoveredIndex = ref<number | null>(null);
-const dimensions = ref({ width: 0, height: 0 });
+const dimensions = ref({ width: 0, height: 0 })
 const tooltipX = ref(0);
 const tooltipY = ref(0);
 
-
-const handleLetterClick = (index:number) =>{
-  console.log(textArray.value[index])
-  textArray.value[index].color = 'rgba(230, 42, 44, 1)'
+// Funkcja obsługująca kliknięcie w literę
+const handleLetterClick = (index: number) => {
+  console.log(textArray.value[index]);
+  if (step.value == 'kolor') {
+    isChangeLetterColor.value.push({ index, color: textArray.value[index].color, letter: textArray.value[index].char });
+    textArray.value[index].color = 'rgba(230, 42, 44, 1)';  // Przykładowa zmiana koloru na czerwony
+  }
 }
 
-
+// Funkcja do uzyskiwania pozycji X litery w tekście
 const getXPosition = (index: number) => {
   let xPosition = 10; // Punkt początkowy
   for (let i = 0; i < index; i++) {
@@ -93,7 +76,7 @@ const getXPosition = (index: number) => {
     xPosition += bbox + 0; // Dodanie odstępu między literami
   }
   return xPosition;
-};
+}
 
 // Funkcja do pomiaru szerokości znaku
 const measureCharacterWidth = (char: string): number => {
@@ -104,17 +87,27 @@ const measureCharacterWidth = (char: string): number => {
   tempCtx.font = `${neonSize.value}px ${fontFamily.value}`;
   const metrics = tempCtx.measureText(char);
   return metrics.width;
-};
-const getCharacterSpacing = () => {
-  const spacings = [];
-  for (let i = 0; i < textArray.value.length - 1; i++) {
-    const charWidth = measureCharacterWidth(textArray.value[i].char);
-    const nextCharWidth = measureCharacterWidth(textArray.value[i + 1].char);
-    const spacing = 2; // lub inna wartość
-    spacings.push({ char: textArray.value[i].char, width: charWidth, spacing });
-  }
-  return spacings;
-};
+}
+
+// Funkcja do pokazywania wymiarów literki przy najechaniu
+function showDimensions(index: number, event: MouseEvent) {
+  const char = textArray.value[index].char;
+  const width = measureCharacterWidth(char);
+  const height = measureCharacterHeight(char);
+
+  dimensions.value.width = width;
+  dimensions.value.height = height;
+
+  tooltipX.value = event.clientX + window.scrollX;
+  tooltipY.value = event.clientY + window.scrollY - height - 10; // Pozycja nad literą
+  hoveredIndex.value = index;
+}
+
+// Funkcja do ukrywania wymiarów przy opuszczeniu literki
+function hideDimensions() {
+  hoveredIndex.value = null;
+}
+
 // Funkcja do pomiaru wysokości znaku
 const measureCharacterHeight = (char: string): number => {
   const tempCanvas = document.createElement('canvas');
@@ -141,41 +134,20 @@ const measureCharacterHeight = (char: string): number => {
   }
 
   return bottom - top;
-};
-
-function showDimensions(index: number, event: MouseEvent) {
-  const char = textArray.value[index].char;
-  const width = measureCharacterWidth(char);
-  const height = measureCharacterHeight(char);
-
-  dimensions.value.width = width;
-  dimensions.value.height = height;
-
-  tooltipX.value = event.clientX + window.scrollX;
-  tooltipY.value = event.clientY + window.scrollY - height - 10; // Pozycja nad literą
-  hoveredIndex.value = index;
 }
 
-function hideDimensions() {
-  hoveredIndex.value = null;
-}
-
-onMounted(async () => {
-  await nextTick(); // Poczekaj na załadowanie elementów w DOM
+onMounted(() => {
+  // Pobieramy tekst z Pinia
+  textArray.value = neonState.textAsArray();
 });
 </script>
 
 <style scoped>
-/* svg {
-  border: 1px solid #ccc;
-} */
-/* text{
- filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.7)) drop-shadow(0 0 10px rgba(0, 255, 255, 0.5)) drop-shadow(0 0 20px rgba(0, 255, 255, 0.5)) drop-shadow(0 0 30px rgba(0, 255, 255, 0.3)) drop-shadow(0 0 40px rgba(0, 255, 255, 0.2));
-} */
-.text-neon:hover{
+.text-neon:hover {
   cursor: pointer !important;
-  /* color: blue !important; */
+  transition: 0.35s;
 }
+
 .tooltip {
   position: absolute;
   background-color: white;

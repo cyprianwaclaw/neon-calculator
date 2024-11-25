@@ -13,7 +13,9 @@
                 </div>
             </div>
         </div>
+        <!-- <h2 :class="step=='font' ? 'pb-[14px]' : '-mb-[10px]'">{{ capitalizeFirstLetter(step) }}</h2> -->
         <h2 class="pb-[14px]">{{ capitalizeFirstLetter(step) }}</h2>
+        
     </div>
 </template>
 <script lang="ts" setup>
