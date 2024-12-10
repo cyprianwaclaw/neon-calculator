@@ -21,7 +21,7 @@
         </div>
         <!-- {{ textareaValue }} -->
         <div class="absolute bottom-0 w-full">
-            <button :disabled="changeDisabledButton(select, textareaValue)" @click="startingConfigureNeon()">dsadsa</button>
+            <button :disabled="changeDisabledButton(select, textareaValue)" @click="startingConfigureNeon()">Dalej</button>
         <!-- <button @click="startingConfigureNeon()">dsadsa</button> -->
         </div>
     </div>
